@@ -8,6 +8,8 @@ import { useAuth } from '../hooks/useAuth';
 import { database } from '../services/firebase';
 import { Question } from '../components/Question';
 import { useRoom } from '../hooks/useRoom';
+import Switch from "react-switch";
+
 
 type RoomParams = {
     id: string;
@@ -17,6 +19,7 @@ export function Room(){
     const {user} = useAuth();
     const params = useParams<RoomParams>();
     const [newQuestion, setNewQuestion] = useState('');
+    const [isChecked, setIsChecked] = useState(false);
     const history = useHistory();
     const roomId = params.id;
     
@@ -57,6 +60,10 @@ export function Room(){
         setNewQuestion('');
     }
 
+    function handleChecked(isChecked: boolean){
+        setIsChecked(isChecked);
+    }
+
     async function handleLikeQuestion(questionId: string, likeID: string | undefined) {
         if (likeID){
             await database.ref(`rooms/${roomId}/questions/${questionId}/likes/${likeID}`).remove();
@@ -68,10 +75,19 @@ export function Room(){
     }
 
     return (
-        <div id="page-room">
+        <div id={`${!isChecked ? "page-room":""}`} className={`${isChecked ? "night-mode":""}`}>
             <header className="content">
-                <img src={logoImg} alt="Letmeask" />
+                <div>
+                    <img src={logoImg} alt="Letmeask" />
+                    <Switch
+                        onChange={handleChecked}
+                        checked={isChecked}
+                        offColor="#f7f588"
+                        onColor="#29292e"
+                    />
+                </div>
                 <RoomCode code={roomId}/>
+                
             </header>
 
             <main className="content">

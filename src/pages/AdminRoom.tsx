@@ -10,6 +10,9 @@ import { database } from '../services/firebase';
 import deleteImg from '../assets/images/delete.svg';
 import  checkImg  from '../assets/images/check.svg';
 import answerImg from '../assets/images/answer.svg';
+import { useState } from 'react';
+import Switch from "react-switch";
+
 
 type RoomParams = {
     id: string;
@@ -19,10 +22,15 @@ export function AdminRoom(){
 
     const params = useParams<RoomParams>();
     const history = useHistory();
-    
+    const [isChecked, setIsChecked] = useState(false);
     const roomId = params.id;
     
     const {questions,title} = useRoom(roomId);
+
+    function handleChecked(isChecked: boolean){
+        setIsChecked(isChecked);
+    }
+
     
     async function handleEndRoom(){
         await database.ref(`rooms/${roomId}`).update({
@@ -53,9 +61,17 @@ export function AdminRoom(){
 
 
     return (
-        <div id="page-room">
+        <div id={`${!isChecked ? "page-room":""}`} className={`${isChecked ? "night-mode":""}`}>
             <header className="content">
-                <img src={logoImg} alt="Letmeask" />
+                <div>
+                    <img src={logoImg} alt="Letmeask" />
+                    <Switch
+                        onChange={handleChecked}
+                        checked={isChecked}
+                        offColor="#f7f588"
+                        onColor="#29292e"
+                    />
+                </div>
                 <div>
                     <RoomCode code={roomId}/>
                     <Button isOutline onClick={handleEndRoom}>Encerrar Sala</Button>
