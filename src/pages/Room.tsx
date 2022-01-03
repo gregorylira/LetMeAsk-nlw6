@@ -32,6 +32,13 @@ export function Room(){
         if(!user){
            throw new Error('User is not logged in') 
         }
+
+        const roomRef = await database.ref(`rooms/${roomId}`).get();
+
+        if(!roomRef.exists()){
+            alert("Sala não encontrada");
+            return;
+        }
         
         const question = {
             content: newQuestion,
