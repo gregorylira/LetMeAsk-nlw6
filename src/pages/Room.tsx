@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import logoImg from '../assets/images/logo.svg';
 import { Button } from '../components/Button';
 import { RoomCode } from '../components/RoomCode';
@@ -17,7 +17,7 @@ export function Room(){
     const {user} = useAuth();
     const params = useParams<RoomParams>();
     const [newQuestion, setNewQuestion] = useState('');
-    
+    const history = useHistory();
     const roomId = params.id;
     
     const {questions,title} = useRoom(roomId);
@@ -36,8 +36,9 @@ export function Room(){
         console.log(roomId);
         const roomRef = await database.ref(`rooms/${roomId}`).get();
 
-        if(!roomRef.exists()){
-            alert("Sala não encontrada");
+        if (roomRef.val().endedAt){
+            alert("Room already closed");
+            history.push('/');
             return;
         }
         

@@ -30,7 +30,7 @@ export function NewRoom(){
             authID: user?.id
         })
 
-        history.push(`/rooms/${firebaseRoom.key}`)
+        history.push(`/admin/rooms/${firebaseRoom.key}`)
 
     }
 
@@ -38,7 +38,7 @@ export function NewRoom(){
     return (
         <div id="page-auth">
             <aside>
-                <img src={illustrationImg} alt="Illustração simbolizanso perguntas e respostas" />
+                <img src={illustrationImg} alt="Illustração simbolizando perguntas e respostas" />
                 <strong>Crie salas de Q&amp;A ao-vivo</strong>
                 <p>Tire as dúvidas da sua audiência em tempo-real</p>
             </aside>
