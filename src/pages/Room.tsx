@@ -33,6 +33,7 @@ export function Room(){
            throw new Error('User is not logged in') 
         }
 
+        console.log(roomId);
         const roomRef = await database.ref(`rooms/${roomId}`).get();
 
         if(!roomRef.exists()){
